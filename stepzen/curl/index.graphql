@@ -13,7 +13,7 @@ type Daily {
   sunset: [DateTime]
   temperature_2m_max: [Float]
   temperature_2m_min: [Float]
-  time: [Date]
+  time: [DateTime]
   uv_index_clear_sky_max: [Float]
   uv_index_max: [Float]
   weathercode: [Int]
