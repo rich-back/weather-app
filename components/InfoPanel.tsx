@@ -2,6 +2,7 @@ import { MoonIcon, SunIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import CityPicker from "./CityPicker";
 import weatherCodeToString from "@/lib/weatherCodeToString";
+import { DateTime } from "luxon";
 
 type Props = {
   city: string;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 function InfoPanel({ city, lat, long, results }: Props) {
+  
   function handleLat(lat: number) {
     if (lat < 0) {
       return `${-lat}° S`;
@@ -24,11 +26,15 @@ function InfoPanel({ city, lat, long, results }: Props) {
     return `${long}° E`;
   }
 
+  const currentTime = DateTime.now()
+    .setZone(results.timezone)
+    .toLocaleString(DateTime.TIME_SIMPLE);
+
   return (
     <div className="bg-gradient-to-br from-[#394F68] to-[#183B7E] text-white p-10">
       <div className="pb-5">
-        <h1 className="text-5xl font-bold">{decodeURI(city)}</h1>
-        <p className="text-xs text-gray-400">
+        <h1 className="text-5xl font-bold mb-2">{decodeURI(city)}</h1>
+        <p className="text-sm text-gray-400">
           {`${handleLat(Number(lat))} / ${handleLong(Number(long))}`}
         </p>
       </div>
@@ -36,7 +42,7 @@ function InfoPanel({ city, lat, long, results }: Props) {
 
       <hr className="my-10" />
 
-      <div className="mt-5 flex items-center justify-between space-x-10 mb-5">
+      <div className="mt-5 flex items-center justify-between space-x-5 mb-5">
         <div>
           <p className="text-xl">
             {new Date().toLocaleDateString("en-GB", {
@@ -46,17 +52,11 @@ function InfoPanel({ city, lat, long, results }: Props) {
               day: "numeric",
             })}
           </p>
-          <p className="font-extralight">
-            Timezone: {Intl.DateTimeFormat().resolvedOptions().timeZone}
+          <p className="font-extralight text-sm max-w-min">
+            Timezone: {results.timezone} ({results.timezone_abbreviation})
           </p>
         </div>
-        <p className="text-xl font-bold uppercase">
-          {new Date().toLocaleTimeString("en-GB", {
-            hour: "numeric",
-            minute: "numeric",
-            hour12: true,
-          })}
-        </p>
+        <p className="text-2xl font-bold uppercase text-start">{currentTime}</p>
       </div>
       <hr className="mt-10 mb-5" />
 
@@ -89,11 +89,11 @@ function InfoPanel({ city, lat, long, results }: Props) {
           <div className="flex-1 flex justify-between items-center">
             <p className="font-extralight">Sunrise</p>
             <p className="uppercase text-2xl">
-                {new Date(results.daily.sunrise[0]).toLocaleTimeString("en-GB", {
-                    hour: "numeric",
-                    minute: "numeric",
-                    hour12: true,
-                })}
+              {new Date(results.daily.sunrise[0]).toLocaleTimeString("en-GB", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              })}
             </p>
           </div>
         </div>
@@ -102,11 +102,11 @@ function InfoPanel({ city, lat, long, results }: Props) {
           <div className="flex-1 flex justify-between items-center">
             <p className="font-extralight">Sunset</p>
             <p className="uppercase text-2xl">
-                {new Date(results.daily.sunset[0]).toLocaleTimeString("en-GB", {
-                    hour: "numeric",
-                    minute: "numeric",
-                    hour12: true,
-                })}
+              {new Date(results.daily.sunset[0]).toLocaleTimeString("en-GB", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              })}
             </p>
           </div>
         </div>
