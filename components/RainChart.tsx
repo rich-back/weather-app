@@ -6,7 +6,7 @@ type Props = {
   results: Root;
 };
 
-function TempChart({ results }: Props) {
+function RainChart({ results }: Props) {
   const hourly = results?.hourly.time
     .map((time) =>
       new Date(time).toLocaleString("en-US", {
@@ -18,29 +18,29 @@ function TempChart({ results }: Props) {
 
   const data = hourly.map((hour, i) => ({
     time: `${Number(hour)}h`,
-    "Temperature (°C)": results.hourly.temperature_2m[i],
-    "Apparent Temperature (°C)": results.hourly.apparent_temperature[i],
+    "Rain (mm)": results.hourly.rain[i],
+    "Precipitation (mm)": results.hourly.precipitation[i],
   }));
 
   const dataFormatter = (number: number) =>
-    `${number} ${results.hourly_units.temperature_2m}`;
+    `${number} ${results.hourly_units.rain}`;
 
   return (
     <Card>
-      <Title>Temperature & Apparent Temperature</Title>
+      <Title>Rain & Precipitation</Title>
       <AreaChart
         className="mt-6"
         data={data}
         showLegend
         index="time"
-        categories={["Temperature (°C)", "Apparent Temperature (°C)"]}
-        colors={["yellow", "rose"]}
+        categories={["Rain (mm)", "Precipitation (mm)"]}
+        colors={["blue", "cyan"]}
         minValue={0}
         valueFormatter={dataFormatter}
-        yAxisWidth={50}
+        yAxisWidth={80}
       />
     </Card>
   );
 }
 
-export default TempChart;
+export default RainChart;
