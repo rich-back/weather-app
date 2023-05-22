@@ -35,7 +35,7 @@ async function WeatherPage({ params: { city, lat, long } }: Props) {
 
   const results: Root = data.myQuery;
 
-// ChatGPT API fetch 
+  // ChatGPT API fetch
 
   // const dataToSend = cleanData(results, city);
 
@@ -58,9 +58,9 @@ async function WeatherPage({ params: { city, lat, long } }: Props) {
     return arr[val % 8];
   }
 
-  function handleUVAlert(UVindex: number) {
+  function handleUVAlert(uvIndex: number) {
     let message = "";
-    switch (UVindex) {
+    switch (uvIndex) {
       case 0:
         message = "No risk of UV - It's safe to stay outside.";
         break;
@@ -94,36 +94,39 @@ async function WeatherPage({ params: { city, lat, long } }: Props) {
     return message;
   }
 
-  function handleUVAlertColor(UVindex: number) {
-    let color = "";
-    switch (UVindex) {
+  function handleUVAlertColor(uvIndex: number) {
+    let alertColor;
+    switch (uvIndex) {
       case 0:
-        color = "gray";
+        alertColor = "gray";
         break;
       case 1:
       case 2:
-        color = "teal";
+        alertColor = "teal";
         break;
       case 3:
       case 4:
       case 5:
-        color = "yellow";
+        alertColor = "yellow";
         break;
       case 6:
       case 7:
-        color = "orange";
+        alertColor = "orange";
         break;
       case 8:
       case 9:
       case 10:
-        color = "red";
+        alertColor = "red";
         break;
       case 11:
-        color = "purple";
+        alertColor = "purple";
         break;
     }
-    return color;
+    return alertColor;
   }
+
+  const uvIndex = Math.floor(results.daily.uv_index_max[0]);
+  const uvAlertColor = handleUVAlertColor(uvIndex);
 
   return (
     <div className="flex flex-col min-h-screen md:flex-row">
@@ -141,7 +144,10 @@ async function WeatherPage({ params: { city, lat, long } }: Props) {
           </div>
 
           <div className="m-2 mb-10">
-            <CalloutCard message="This is where the weather summary goes..." color="teal" />
+            <CalloutCard
+              message="This is where the weather summary goes..."
+              color="teal"
+            />
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 m-2">
@@ -160,9 +166,7 @@ async function WeatherPage({ params: { city, lat, long } }: Props) {
               <StatCard
                 title="UV Index"
                 metric={`${results.daily.uv_index_max[0].toFixed(2)}`}
-                color={handleUVAlertColor(
-                  Math.floor(results.daily.uv_index_max[0])
-                )}
+                color={uvAlertColor}
               />
               <CalloutCard
                 message={handleUVAlert(

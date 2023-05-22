@@ -8,12 +8,12 @@ import { Card } from "@tremor/react";
 type Props = {
   title: string;
   metric: string;
-  color?: Color;
+  color?: Color | string;
 };
 
 function StatCard({ title, metric, color }: Props) {
   return (
-    <Card decoration="top" decorationColor={color}>
+    <Card decoration="top" decorationColor={color as Color}>
       <Text>{title}</Text>
       <Metric>{metric}</Metric>
     </Card>

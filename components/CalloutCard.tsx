@@ -6,7 +6,7 @@ import { Callout, Color } from "@tremor/react";
 type Props = {
   message: string;
   warning?: boolean;
-  color?: Color;
+  color?: Color | string;
 };
 
 function CalloutCard({ message, warning, color }: Props) {
@@ -15,7 +15,7 @@ function CalloutCard({ message, warning, color }: Props) {
       className="mt-4"
       title={message}
       icon={warning ? ExclamationIcon : CheckCircleIcon}
-      color={color}
+      color={color as Color}
     />
   );
 }
